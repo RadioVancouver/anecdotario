@@ -108,38 +108,40 @@
 
         // Función para enviar datos a Google Forms
         function enviarFormularioGoogle() {
-            const form = document.getElementById("formulario");
+    const form = document.getElementById("formulario");
 
-            // Obtener los valores del formulario
-            const formData = new FormData(form);
+    // Obtener los valores del formulario
+    const formData = new FormData(form);
 
-            // Construir la URL con los datos en formato GET
-            const googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSe5bAvgRmHGX5DOdq0jMKsKYT6XEXgINoEeJPggdNKVrKeQrg/formResponse";
-            const params = new URLSearchParams();
-            
-            params.append("entry.1633629170", formData.get("nombre_docente"));
-            params.append("entry.893309803", formData.get("nivel"));
-            params.append("entry.551204220", formData.get("grado"));
-            params.append("entry.1863246970", formData.get("nombre_estudiante"));
-            params.append("entry.405086156", formData.get("incidencia"));
-            params.append("entry.1756096427", formData.get("descripcion"));
-            params.append("entry.348627190", formData.get("observacion"));
+    // URL de respuesta del formulario de Google
+    const googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSe5bAvgRmHGX5DOdq0jMKsKYT6XEXgINoEeJPggdNKVrKeQrg/formResponse";
 
-            // Enviar datos usando Fetch
-            fetch(googleFormURL, {
-                method: "POST",
-                mode: "no-cors",
-                body: params
-            })
-            .then(() => {
-                alert("Formulario enviado correctamente");
-                form.reset(); // Opcional: limpia el formulario después de enviarlo
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Hubo un problema al enviar el formulario");
-            });
-        }
+    // Crear objeto con los datos correctos
+    const params = new URLSearchParams();
+    params.append("entry.1633629170", formData.get("nombre_docente"));
+    params.append("entry.893309803", formData.get("nivel"));
+    params.append("entry.551204220", formData.get("grado"));
+    params.append("entry.1863246970", formData.get("nombre_estudiante"));
+    params.append("entry.405086156", formData.get("incidencia"));
+    params.append("entry.1756096427", formData.get("descripcion"));
+    params.append("entry.348627190", formData.get("observacion"));
+
+    // Enviar datos a Google Forms por POST
+    fetch(googleFormURL, {
+        method: "POST",
+        mode: "no-cors",  // Evita errores de CORS
+        body: params
+    })
+    .then(() => {
+        alert("Formulario enviado correctamente.");
+        form.reset(); // Limpiar formulario después de enviar
+    })
+    .catch(error => {
+        console.error("Error al enviar:", error);
+        alert("Hubo un problema al enviar el formulario.");
+    });
+}
+
 
         // Capturar el evento de envío del formulario
         document.getElementById("formulario").addEventListener("submit", function(event) {
