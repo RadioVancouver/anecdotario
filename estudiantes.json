@@ -1,0 +1,16 @@
+{
+  "Inicial": {
+    "3 años": ["Juan Pérez", "María Gómez"],
+    "4 años": ["Carlos Ruiz", "Ana Torres"],
+    "5 años": ["Pedro Rojas", "Sofía Lima"]
+  },
+  "Primaria": {
+    "1ro Primaria": ["Luis Fernández", "Martín Ríos"],
+    "2do Primaria": ["José Vargas", "Laura Castillo"],
+    "3ro A Primaria": ["Pepe Díaz", "Valeria Ramírez"]
+  },
+  "Secundaria": {
+    "1ro Secundaria": ["Daniela López", "Raúl Herrera"],
+    "2do Secundaria": ["Natalia Mendoza", "Jorge Vera"]
+  }
+}

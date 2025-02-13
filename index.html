@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario para Docente</title>
+</head>
+<body>
+
+    <h1>Formulario de Registro</h1>
+
+    <form id="formulario">
+        <label for="nombre_docente">Nombre del Docente:</label>
+        <input type="text" id="nombre_docente" name="nombre_docente" required><br><br>
+
+        <label for="nivel">Nivel:</label>
+        <select id="nivel" name="nivel" required>
+            <option value="">Selecciona</option>
+            <option value="Inicial">Inicial</option>
+            <option value="Primaria">Primaria</option>
+            <option value="Secundaria">Secundaria</option>
+        </select><br><br>
+
+        <label for="grado">Grado:</label>
+        <select id="grado" name="grado" required>
+            <option value="">Selecciona</option>
+        </select><br><br>
+
+        <label for="nombre_estudiante">Nombre del Estudiante:</label>
+        <select id="nombre_estudiante" name="nombre_estudiante" required>
+            <option value="">Selecciona</option>
+        </select><br><br>
+
+        <label for="incidencia">Incidencia Ocurrida:</label>
+        <input type="text" id="incidencia" name="incidencia" required><br><br>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea><br><br>
+
+        <label for="observacion">Observación:</label>
+        <textarea id="observacion" name="observacion" required></textarea><br><br>
+
+        <button type="submit">Enviar Información</button>
+    </form>
+
+    <script>
+        const nivelSelector = document.getElementById("nivel");
+        const gradoSelector = document.getElementById("grado");
+        const estudianteSelector = document.getElementById("nombre_estudiante");
+
+        let estudiantesPorGrado = {}; // Aquí guardamos los datos
+
+        // Cargar automáticamente los datos del archivo JSON
+        async function cargarEstudiantes() {
+            try {
+                const response = await fetch("estudiantes.json"); // Ruta del archivo JSON
+                estudiantesPorGrado = await response.json();
+                actualizarGrados(); // Llenar grados automáticamente al cargar
+            } catch (error) {
+                console.error("Error cargando los estudiantes:", error);
+            }
+        }
+
+        // Función para actualizar los grados según el nivel seleccionado
+        function actualizarGrados() {
+            const nivel = nivelSelector.value;
+            gradoSelector.innerHTML = "<option value=''>Selecciona</option>"; // Limpiar opciones
+            estudianteSelector.innerHTML = "<option value=''>Selecciona</option>"; // Limpiar estudiantes
+
+            let grados = [];
+            if (nivel === "Inicial") {
+                grados = ["3 años", "4 años", "5 años"];
+            } else if (nivel === "Primaria") {
+                grados = [
+                    "1ro Primaria", "2do Primaria", "3ro A Primaria", "3ro B Primaria", 
+                    "4to A Primaria", "4to B Primaria", "5to Primaria", "6to Primaria"
+                ];
+            } else if (nivel === "Secundaria") {
+                grados = [
+                    "1ro Secundaria", "2do Secundaria", "3ro Secundaria", 
+                    "4to Secundaria", "5to Secundaria"
+                ];
+            }
+
+            grados.forEach(grado => {
+                const option = document.createElement("option");
+                option.value = grado;
+                option.textContent = grado;
+                gradoSelector.appendChild(option);
+            });
+        }
+
+        // Función para actualizar la lista de estudiantes según el grado seleccionado
+        function actualizarEstudiantes() {
+            const nivel = nivelSelector.value;
+            const gradoSeleccionado = gradoSelector.value;
+            estudianteSelector.innerHTML = "<option value=''>Selecciona</option>"; // Limpiar opciones
+
+            if (estudiantesPorGrado[nivel] && estudiantesPorGrado[nivel][gradoSeleccionado]) {
+                estudiantesPorGrado[nivel][gradoSeleccionado].forEach(estudiante => {
+                    const option = document.createElement("option");
+                    option.value = estudiante;
+                    option.textContent = estudiante;
+                    estudianteSelector.appendChild(option);
+                });
+            }
+        }
+
+        // Eventos
+        nivelSelector.addEventListener("change", actualizarGrados);
+        gradoSelector.addEventListener("change", actualizarEstudiantes);
+
+        // Cargar estudiantes al iniciar la página
+        cargarEstudiantes();
+    </script>
+
+</body>
+</html>
